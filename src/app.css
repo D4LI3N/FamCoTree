@@ -1,0 +1,22 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+html {
+	display: flex; /* Make  <html> of type flex */
+	min-height: 100%; /* Force <html> to fill the whole page */
+	scrollbar-gutter: auto !important;
+}
+body {
+	flex-grow: 1; /* Force <body> to fill the whole page */
+	display: flex; /* Make  <body> of type flex */
+}
+#svelte-init {
+	flex-grow: 1; /* Force <div>  to fill the whole page */
+	display: flex; /* Make  <div>  of type flex */
+	flex-direction: column; /* Force <div>  to be vertical */
+}
+
+html:has(body.content-overflow-y) {
+	scrollbar-gutter: stable !important;
+}

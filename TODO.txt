@@ -1,0 +1,36 @@
+Put them both in one forEach,
+and fill both arrays, 
+use relation to determen loc(x,y) for nodes:
+for "Spouse", "Husband", "Wife" use nextFreeLocH
+for "Child", "Son", "Daughter" use nextFreeLocV
+
+Tips popup
+
+Settings
+Dark mode = ON
+Diagram theme color
+Diagram contact style
+Diagram link style
+Diagram fonts
+
+Enable UID editing = OFF
+Auto update UIDs = OFF
+
+Remove all contacts
+Remove all relations
+Clear FamCoTree
+
+
+Edit node
+Name: on click, populate 4 with ;;;;, on save, save array, and node remove replace ;;;; with space
+Year: on click, convert from date, on save, convert to date
+
+Contact edit
+Material like in GContacts
+User details (fixed)
+Prefix
+Name
+Surname
+Suffix
+(or maybe just copy it completely)
+
