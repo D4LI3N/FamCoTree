@@ -30,8 +30,10 @@
 
 ## Software:
 
-- JavaScript
 - SvelteKit
+- JavaScript
+- HTML
+- CSS
 - GoJS
 
 # Credits
