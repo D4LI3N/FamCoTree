@@ -1,38 +1,47 @@
-# create-svelte
+# FamCoTree
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+[![badge](https://img.shields.io/badge/license-MIT-success.svg)](https://opensource.org/license/mit)
+[![badge](https://img.shields.io/badge/support-PayPal-blue.svg)](https://paypal.me/d4li3n)
+[![badge](https://img.shields.io/badge/publication-danielthecyberdude.com-purple.svg)](https://danielthecyberdude.com/project/famcotree)
 
-## Creating a project
+![badge](https://img.shields.io/badge/technology-SvelteKit-green.svg)
+![badge](https://img.shields.io/badge/technology-JavaScript-green.svg)
+![badge](https://img.shields.io/badge/technology-HTML-green.svg)
+![badge](https://img.shields.io/badge/technology-CSS-green.svg)
+![badge](https://img.shields.io/badge/technology-GoJS-green.svg)
 
-If you're seeing this, you've probably already done this step. Congrats!
+![header image](https://github.com/D4LI3N/FlipperAhoy/blob/master/x.png?raw=true)
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+**FamCoTree** is a ...
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+# Project Features
 
-## Developing
+- Cross-platform
+- Single codebase
+- Data persistance (localStorage)
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+# Operation
 
-```bash
-npm run dev
+## Usage
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+‍
 
-## Building
+# Technology Overview
 
-To create a production version of your app:
+## Software:
 
-```bash
-npm run build
-```
+- JavaScript
+- SvelteKit
+- GoJS
 
-You can preview the production build with `npm run preview`.
+# Credits
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+- file.io - for allowing live sharing and temporary hosting for SVG files
+- QR - for generating QR codes of shareable SVG's
+
+# Releases
+
+[![badge](https://img.shields.io/badge/Web-0078D6?style=for-the-badge&logo=svelte&logoColor=white)](https://famcotree.danielthecyberdude.com)
+<br>
+
+**Note:** You are welcome to report bugs and contribute to the project :)
