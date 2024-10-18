@@ -27,11 +27,9 @@
 Go to [famcotree.danielthecyberdude.com](https://famcotree.danielthecyberdude.com)
 on the homepage, there will be 3 options:
 
-1.  Choose file - Import existing contacts in CSV or VCF formats
-
-2‍. Start from scratch - Create contacts scheme from scratch
-
-3. Continue - Continue working on existing tree (only shown if there was any progress beforehand)
+- Choose file - Import existing contacts in CSV or VCF formats
+- Start from scratch - Create contacts scheme from scratch
+- Continue - Continue working on existing tree (only shown if there was any progress beforehand)
 
 # Technology Overview
 
