@@ -3,6 +3,7 @@
 [![badge](https://img.shields.io/badge/license-MIT-success.svg)](https://opensource.org/license/mit)
 [![badge](https://img.shields.io/badge/support-PayPal-blue.svg)](https://paypal.me/d4li3n)
 [![badge](https://img.shields.io/badge/publication-danielthecyberdude.com-purple.svg)](https://danielthecyberdude.com/project/famcotree)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/e03a33ff-5b6b-48f7-af54-2ddc47c8a0ed/deploy-status)](https://app.netlify.com/sites/famcotree/deploys)
 
 ![badge](https://img.shields.io/badge/technology-SvelteKit-green.svg)
 ![badge](https://img.shields.io/badge/technology-JavaScript-green.svg)
