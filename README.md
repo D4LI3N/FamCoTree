@@ -17,9 +17,19 @@
 
 # Project Features
 
-- Cross-platform
-- Single codebase
-- Data persistance (localStorage)
+✔️ Free + Open Source + LTS + Zero Data Collection
+
+✔️ Compatible with third party Contact Apps (Google, Samsung...)
+
+✔️ Edit contacts and relations in FamCoTree or Contacts App (learn how)
+
+✔️ Store all your Family Tree information and relations in one file
+
+✔️ Import CSV or VCF (V3.0)
+
+✔️ Export CSV, VCF | SVG, PNG
+
+✔️ Data persistance (localStorage)
 
 # Operation
 
@@ -62,7 +72,7 @@ or you can even share diagrams SVG directly by URL or QR code that expires (remo
 
 # Releases
 
-[![badge](https://img.shields.io/badge/Web-0078D6?style=flat&logo=svelte&logoColor=white&color=red)](https://famcotree.danielthecyberdude.com)
+[![badge](https://img.shields.io/badge/Web-0078D6?style=for-the-badge&logo=svelte&logoColor=white&color=red)](https://famcotree.danielthecyberdude.com)
 <br>
 
 **Note:** You are welcome to contribute to the project, as well to report bugs :)
