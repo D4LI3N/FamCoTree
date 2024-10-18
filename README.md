@@ -12,7 +12,7 @@
 
 ![header image](https://github.com/D4LI3N/FlipperAhoy/blob/master/x.png?raw=true)
 
-**FamCoTree** is a ...
+**FamCoTree** ia a tool for creating interactive family trees by importing contacts from third party Contacts Apps, in VCF or CSV (Google Contacts) formats. Map relationships, edit contact details, and export data in SVG, PNG, CSV, or VCF formats for efficient integration and management of contact databases.
 
 # Project Features
 
@@ -24,7 +24,14 @@
 
 ## Usage
 
-‍
+Go to [famcotree.danielthecyberdude.com](https://famcotree.danielthecyberdude.com)
+on the homepage, there will be 3 options:
+
+1.  Choose file - Import existing contacts in CSV or VCF formats
+
+2‍. Start from scratch - Create contacts scheme from scratch
+
+3. Continue - Continue working on existing tree (only shown if there was any progress beforehand)
 
 # Technology Overview
 
@@ -38,12 +45,12 @@
 
 # Credits
 
-- [file.io](https://file.io) - for allowing live sharing and temporary hosting for SVG files
-- [goqr.me](https://goqr.me) - for generating QR codes of shareable SVG's
+- [file.io](https://file.io) - allows temporary media hosting
+- [goqr.me](https://goqr.me) - used for generating QR codes of shareable SVG's
 
 # Releases
 
 [![badge](https://img.shields.io/badge/Web-0078D6?style=for-the-badge&logo=svelte&logoColor=white)](https://famcotree.danielthecyberdude.com)
 <br>
 
-**Note:** You are welcome to report bugs and contribute to the project :)
+**Note:** You are welcome to contribute to the project, as well to report bugs :)
