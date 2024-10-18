@@ -24,8 +24,8 @@
 
 ## Usage
 
-Go to [famcotree.danielthecyberdude.com](https://famcotree.danielthecyberdude.com)
-on the homepage, there will be 3 options:
+Go to [famcotree.danielthecyberdude.com](https://famcotree.danielthecyberdude.com),
+then on the homepage, there will be 3 options:
 
 - Choose file - Import existing contacts in CSV or VCF formats
 - Start from scratch - Create contacts scheme from scratch

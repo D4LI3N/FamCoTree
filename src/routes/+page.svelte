@@ -183,7 +183,7 @@
 		<p>☘️ Free + Open Source + LTS + Zero Data Collection</p>
 		<p>✔️ Compatible with third party Contact Apps (Google, Samsung...)</p>
 		<p>✔️ Edit contacts and relations in FamCoTree or Contacts App (<a href="#">learn how</a>)</p>
-		<p>✔️ Keep all your Family Tree information and relations in one file</p>
+		<p>✔️ Store all your Family Tree information and relations in one file</p>
 		<p>✔️ Import CSV or VCF (V3.0)</p>
 		<p>✔️ Export CSV, VCF | SVG, PNG</p>
 	</article>
