@@ -62,7 +62,7 @@ or you can even share diagrams SVG directly by URL or QR code that expires (remo
 
 # Releases
 
-[![badge](https://img.shields.io/badge/Web-0078D6?style=for-the-badge&logo=svelte&logoColor=white)](https://famcotree.danielthecyberdude.com)
+[![badge](https://img.shields.io/badge/Web-0078D6?style=for-the-badge&logo=svelte&logoColor=white&color=red)](https://famcotree.danielthecyberdude.com)
 <br>
 
 **Note:** You are welcome to contribute to the project, as well to report bugs :)
