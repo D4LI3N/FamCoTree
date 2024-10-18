@@ -39,11 +39,11 @@ Edit your contacts "scheme" and export it in the next formats, as data:
 
 as an image:
 
-- SVG - medium comaptibiliy, best quality (recommended)
-- PNG - best compatibility, worse quality
+- SVG - medium comaptibiliy, no loss in quality (recommended)
+- PNG - best compatibility, limited quality (not for big diagrams)
 
-or you can even share it directly by URL or QR code that lasts for 24h.
-(only the diagrams visual scheme is being shared, in SVG format, not full scheme/information)
+or you can even share diagrams SVG directly by URL or QR code that expires (removes it) after 24h.
+(only the diagrams visual scheme is being shared, not full scheme/information)
 
 # Technology Overview
 
