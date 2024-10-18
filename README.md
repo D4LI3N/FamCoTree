@@ -32,6 +32,19 @@ then on the homepage, there will be 3 options:
 - Start from scratch - Create contacts scheme from scratch
 - Continue - Continue working on existing tree (only shown if there was any progress beforehand)
 
+Edit your contacts "scheme" and export it in the next formats, as data:
+
+- CSV - Coogle Contacts compatible CSV
+- VCF - VCARD V3.0
+
+as an image:
+
+- SVG - medium comaptibiliy, best quality (recommended)
+- PNG - best compatibility, worse quality
+
+or you can even share it directly by URL or QR code that lasts for 24h.
+(only the diagrams visual scheme is being shared, in SVG format, not full scheme/information)
+
 # Technology Overview
 
 ## Software:
