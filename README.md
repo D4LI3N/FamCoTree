@@ -38,8 +38,8 @@
 
 # Credits
 
-- file.io - for allowing live sharing and temporary hosting for SVG files
-- QR - for generating QR codes of shareable SVG's
+- [file.io](https://file.io) - for allowing live sharing and temporary hosting for SVG files
+- [goqr.me](https://goqr.me) - for generating QR codes of shareable SVG's
 
 # Releases
 
