@@ -362,7 +362,7 @@
 
 		diagram.model.startTransaction('add contact');
 		diagram.model.addNodeData({
-			pic: 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp',
+			pic: 'https://famcotree.danielthecyberdude.com/Avatar.jpg', //'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp',
 			name: 'New',
 			surname: 'Contact',
 			born: '',
@@ -514,7 +514,7 @@
 			(contact) => (
 				console.log(contact.Birthday),
 				{
-					pic: 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp',
+					pic: 'https://famcotree.danielthecyberdude.com/Avatar.jpg', //'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp',
 					name: contact['First Name'],
 					surname: contact['Last Name'],
 					born: contact.Birthday,
