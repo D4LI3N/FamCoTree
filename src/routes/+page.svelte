@@ -10,7 +10,7 @@
 	let canvasBody, particles;
 	let w, h;
 
-	function handleFile(event) {
+	function mainFile(event) {
 		const selectedFile = event.target.files[0];
 		if (selectedFile) {
 			fileStore.set(selectedFile);
@@ -18,7 +18,12 @@
 		}
 	}
 
-	function startMain(event) {
+	function mainScratch(event) {
+		fileStore.set(1);
+		goto('/main');
+	}
+	function mainContinue(event) {
+		fileStore.set(null);
 		goto('/main');
 	}
 
@@ -170,18 +175,22 @@
 			it as contacts or vice-versa.
 		</p>
 		<input
-			on:change={handleFile}
+			on:change={mainFile}
 			type="file"
 			accept=".csv, .vcf"
 			title="Upload .csv for Google Contacts or .vcf for Phone Contacts"
 			class="file-input file-input-bordered file-input-primary w-full max-w-xs"
 		/>
-		<p>or</p>
-		<button on:click={startMain} class="btn btn-primary">Start from scratch</button>
+		<br />
+		<br />
+		<button on:click={mainScratch} class="btn btn-primary">Start from scratch</button>
+		or
+		<button on:click={mainContinue} class="btn btn-secondary">Continue with last scheme</button>
 
 		<h2>Features:</h2>
 		<p>☘️ Free + Open Source + LTS + Zero Data Collection</p>
 		<p>✔️ Compatible with third party Contact Apps (Google, Samsung...)</p>
+		<!-- svelte-ignore a11y-invalid-attribute -->
 		<p>✔️ Edit contacts and relations in FamCoTree or Contacts App (<a href="#">learn how</a>)</p>
 		<p>✔️ Store all your Family Tree information and relations in one file</p>
 		<p>✔️ Import CSV or VCF (V3.0)</p>

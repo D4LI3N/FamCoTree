@@ -4,8 +4,8 @@
 	import * as go from 'gojs';
 	import { afterUpdate, onMount } from 'svelte';
 	import Papa from 'papaparse';
-
 	import { fileStore } from '$lib/stores/fileStore';
+	import default_scheme from '$lib/default_scheme.json';
 
 	// drawers
 	let nodeDrawer = false;
@@ -50,6 +50,7 @@
 	let diagramRelationStlye;
 	let lockUID = true;
 	let autoUpdateUID = true;
+	let autoReverseRelation = false;
 
 	let nodeCount = 0;
 	let linkCount = 0;
@@ -251,13 +252,18 @@
 			selectedFile = value;
 		});
 
-		if (selectedFile) {
+		if (selectedFile === 1) {
+			console.log('mainScratch');
+			diagram.model = new go.GraphLinksModel(
+				default_scheme.nodeDataArray,
+				default_scheme.linkDataArray
+			);
+		} else if (selectedFile !== null) {
+			console.log('mainFile');
 			Papa.parse(selectedFile, {
 				header: true,
 				skipEmptyLines: true,
 				complete: function (results) {
-					console.log('Parsed CSV data:', results.data); // Parsed CSV data
-
 					// Sort the data by year of birth
 					results.data.sort((a, b) => {
 						const yearA = extractYear(a.Birthday); // Assuming Birthday is the correct field
@@ -265,12 +271,13 @@
 						return yearA - yearB; // Sort in ascending order
 					});
 
+					console.log('Sorted CSV data:', results.data); // Sorted CSV data
 					importCSV(results.data); // Pass the sorted data to createGoJSData
 					fileStore.set(null);
 				}
 			});
 		} else {
-			console.log('loadDiagramFromLocalStorage');
+			console.log('mainContinue');
 			loadDiagramFromLocalStorage();
 		}
 
@@ -389,6 +396,10 @@
 			.map((v, i) => `${i === 0 ? 'X' : 'Y'}: ${v}`)
 			.join('         ');
 		console.log(data.loc.split(' '));
+	}
+
+	function editScheme() {
+		console.log('editScheme');
 	}
 
 	function removeAllRelations() {
@@ -1192,7 +1203,7 @@
 							</svg>
 						</label>
 					</label>
-					<hr />
+					<div class="divider">Diagram style</div>
 
 					<div class="mt-4 flex items-center justify-between">
 						<label class="cursor-pointer text-base" for="colorPicker">Diagram color</label>
@@ -1244,7 +1255,7 @@
 							Diagram relation style
 						</label>
 					</div>
-					<hr />
+					<div class="divider">Automation</div>
 
 					<label class="label cursor-pointer">
 						<span class="label-text">Readonly UID</span>
@@ -1255,7 +1266,18 @@
 						<input type="checkbox" bind:checked={autoUpdateUID} class="toggle toggle-primary" />
 					</label>
 
-					<hr />
+					<label class="label cursor-pointer">
+						<span class="label-text">Auto add reverse relation</span>
+						<input
+							type="checkbox"
+							bind:checked={autoReverseRelation}
+							class=" toggle toggle-primary"
+							disabled
+						/>
+					</label>
+
+					<div class="divider">Danger zone</div>
+					<button on:click={editScheme} class="btn btn-error mt-4 bg-red-300">Edit scheme</button>
 					<button on:click={removeAllRelations} class="btn btn-error mt-4"
 						>Delete all {linkCount} relations</button
 					>
