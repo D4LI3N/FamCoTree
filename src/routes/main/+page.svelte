@@ -908,6 +908,8 @@
 
 <div bind:this={FamCoTree} class="grow" />
 
+<!-- left sidebar -->
+
 <div class="drawer z-50">
 	<input id="node-drawer" bind:checked={nodeDrawer} type="checkbox" class="drawer-toggle" />
 
@@ -920,7 +922,7 @@
 
 			<!-- Sidebar Form -->
 			<form class="form-control">
-				<div class="avatar">
+				<div class="avatar self-center">
 					<div class="w-fill mask mask-squircle">
 						<img src={cForm.pic} alt="Contact" />
 						<button
@@ -1076,7 +1078,7 @@
 								fixdUID();
 							}}
 						>
-							&#10005; <!-- Clear button moved to the left -->
+							&#10005;
 						</button>
 					{/if}
 				</div>
@@ -1148,6 +1150,8 @@
 		</aside>
 	</div>
 </div>
+
+<!-- right sidebar -->
 
 <div class="drawer drawer-end z-50">
 	<input id="settings-drawer" type="checkbox" class="drawer-toggle" />
