@@ -40,6 +40,8 @@
 	let qrCodeUrl;
 	let fileLink;
 	let loading = false;
+	let dialogVar;
+	let dialogValue = '';
 
 	// settings
 	let darkMode = false;
@@ -399,7 +401,18 @@
 	}
 
 	function editScheme() {
+		dialogValue = diagram.model.toJson();
+		dialogVar.showModal();
 		console.log('editScheme');
+	}
+	function updateScheme() {
+		console.log('updateScheme');
+		diagram.model = go.Model.fromJson(dialogValue);
+		dialogVar.close();
+	}
+	function copyScheme() {
+		console.log('copyToClipboardScheme');
+		navigator.clipboard.writeText(diagram.model.toJson());
 	}
 
 	function removeAllRelations() {
@@ -1293,6 +1306,34 @@
 		</aside>
 	</div>
 </div>
+
+<!-- scheme dialog -->
+
+<dialog bind:this={dialogVar} id="shceme_dialog" class="modal">
+	<div class="modal-box w-11/12 max-w-5xl">
+		<form method="dialog">
+			<button class="btn btn-circle btn-ghost btn-sm absolute right-2 top-2">✕</button>
+		</form>
+		<h3 class="text-lg font-bold">Scheme editor</h3>
+		<p class="py-4">Be carefull when updating scheme, use proper JSON syntax!</p>
+
+		<textarea
+			bind:value={dialogValue}
+			placeholder="JSON scheme"
+			class=" textarea textarea-bordered min-h-[300px] w-full resize"
+		/>
+		<div class="modal-action">
+			<form method="dialog">
+				<!-- if there is a button, it will close the modal -->
+				<button on:click={copyScheme} class="btn btn-primary">Copy to clipboard</button>
+				<button on:click={updateScheme} class="btn btn-error">Update</button>
+			</form>
+		</div>
+	</div>
+	<form method="dialog" class="modal-backdrop">
+		<button>close</button>
+	</form>
+</dialog>
 
 <style>
 	/*
