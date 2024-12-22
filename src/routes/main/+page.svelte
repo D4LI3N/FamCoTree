@@ -15,7 +15,6 @@
 	let openNames = false;
 
 	const cForm = {
-		pic: '',
 		name: '',
 		surname: '',
 		prefix: '',
@@ -23,7 +22,9 @@
 		nickname: '',
 		born: '',
 		died: '',
-		position: ''
+		position: '',
+		notes: '',
+		pic: ''
 	};
 
 	let card_w = 200;
@@ -89,7 +90,7 @@
 				width: card_w,
 				height: 50,
 				toolTip: go.GraphObject.build('ToolTip').add(
-					new go.TextBlock({ margin: 4 }).bind('text', 'name')
+					new go.TextBlock({ margin: 4 }).bind('text', 'notes')
 				),
 				doubleClick: () => {
 					nodeDrawer = true;
@@ -245,6 +246,13 @@
 				.bind('text', '', diagramInfo)
 		);
 
+		diagram.addDiagramListener('TextEdited', (e) => {
+			const tb = e.subject; // The edited TextBlock
+			if (tb && tb.part instanceof go.Link) {
+				console.log('Link text was edited to:', tb.text);
+			}
+		});
+
 		diagram.addDiagramListener('ChangedSelection', (e) => {
 			selectedNode = diagram.selection.first();
 			selectedNodes = diagram.selection.count;
@@ -313,6 +321,7 @@
 
 		selectedNode.data.born = cForm.born;
 		selectedNode.data.died = cForm.died;
+		selectedNode.data.notes = cForm.notes;
 
 		updateAllUids();
 		selectedNode.data.key = cForm.key;
@@ -376,6 +385,7 @@
 			surname: 'Contact',
 			born: '',
 			died: '',
+			notes: '',
 			key: 'new_contact_' + generateRandomYear(),
 			loc: nextFreeLocH()
 		});
@@ -391,6 +401,7 @@
 		cForm.surname = data.surname;
 		cForm.born = data.born;
 		cForm.died = data.died;
+		cForm.notes = data.notes;
 
 		cForm.key = data.key;
 		cForm.position = data.loc
@@ -536,13 +547,14 @@
 	function importCSV(data) {
 		nodeDataArray = data.map(
 			(contact) => (
-				console.log(contact.Birthday),
+				console.log(contact),
 				{
 					pic: 'https://famcotree.danielthecyberdude.com/Avatar.webp',
 					name: contact['First Name'],
 					surname: contact['Last Name'],
 					born: contact.Birthday,
 					died: contact['Event 1 - Value'], // Assuming death date is in Event 1 - Value
+					notes: contact.Notes,
 					key:
 						contact['Custom Field 1 - Value'] ||
 						`${contact['First Name']}_${contact['Last Name']}_${generateRandomYear()}`, // Use UID or generate one
@@ -686,7 +698,7 @@
 
 		// Process node data and dynamically add headers for relations
 		nodeDataArray.forEach((node) => {
-			const { name, surname, key, loc, pic, born, died } = node;
+			const { name, surname, key, loc, notes, pic, born, died } = node;
 
 			// Extract relations for the current node (only those where the node is "from")
 			const relations = relationsMap[key] || [];
@@ -715,7 +727,7 @@
 				'', // Organization Title
 				'', // Organization Department
 				born || '', // Birthday
-				'', // Notes
+				notes || '', // Notes
 				pic || '', // Photo
 				'' // Labels
 			];
@@ -1120,6 +1132,25 @@
 							&#10005; <!-- Clear button moved to the left -->
 						</button>
 					{/if}
+				</div>
+
+				<div class="relative mt-4">
+					<textarea
+						type="text"
+						id="dNotes"
+						bind:value={cForm.notes}
+						on:input={fixdUID}
+						placeholder="Notes"
+						class="peer input min-h-28 w-full rounded-lg border-2 border-gray-300 px-4 pb-2 pt-1 focus:border-primary focus:outline-none focus:ring-0"
+					/>
+					<label
+						for="dNotes"
+						class="absolute left-4 top-0 -translate-y-1/2 transform bg-white px-1 transition-all duration-200
+							peer-placeholder-shown:top-6 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400
+							peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:text-sm peer-focus:text-primary"
+					>
+						Notes
+					</label>
 				</div>
 
 				<div class="relative mt-4">
