@@ -5,7 +5,8 @@
 	import { afterUpdate, onMount } from 'svelte';
 	import Papa from 'papaparse';
 	import { fileStore } from '$lib/stores/fileStore';
-	import default_scheme from '$lib/default_scheme.json';
+	import default_scheme from '$lib/defaults/default_scheme.json';
+	import reverse_relations from '$lib/defaults/reverse_relations.json';
 
 	// drawers
 	let nodeDrawer = false;
@@ -53,7 +54,7 @@
 	let diagramRelationStlye;
 	let lockUID = true;
 	let autoUpdateUID = true;
-	let autoReverseRelation = false;
+	let autoReverseRelation = true;
 
 	let nodeCount = 0;
 	let linkCount = 0;
@@ -247,9 +248,15 @@
 		);
 
 		diagram.addDiagramListener('TextEdited', (e) => {
-			const tb = e.subject; // The edited TextBlock
-			if (tb && tb.part instanceof go.Link) {
-				console.log('Link text was edited to:', tb.text);
+			if (autoReverseRelation) {
+				const tb = e.subject;
+				if (tb && tb.part instanceof go.Link) {
+					const { from, to, text } = tb.part.data;
+					const reverseText = reverse_relations[text.toLowerCase()];
+					!reverseText || diagram.model.linkDataArray.some((l) => l.from === to && l.to === from)
+						? null
+						: diagram.model.addLinkData({ from: to, to: from, text: reverseText });
+				}
 			}
 		});
 
@@ -301,6 +308,7 @@
 				if (model['nodeDataArray'].length !== 0) {
 					console.log('not empty');
 					saveDiagramToLocalStorage(); // Save model after each transaction (i.e., modification)
+					diagram.requestUpdate();
 				} else {
 					console.log('empty');
 				}
@@ -1320,7 +1328,6 @@
 							type="checkbox"
 							bind:checked={autoReverseRelation}
 							class=" toggle toggle-primary"
-							disabled
 						/>
 					</label>
 
