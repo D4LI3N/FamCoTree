@@ -552,27 +552,21 @@
 				{ from: 'Dmitar_Petrović_1232', to: 'Milan_Petrović_1111', text: 'Child' }
 			]; */
 
+	function findInContact(contact, key) {
+		for (const field in contact) {
+			if (field.includes('Label') && contact[field] === key) {
+				const valueField = field.replace('Label', 'Value');
+				key = contact[valueField];
+				break;
+			}
+		}
+		return null;
+	}
+
 	function importCSV(data) {
 		nodeDataArray = data.map((contact) => {
-			// Find UID first
-			let key = null;
-			for (const field in contact) {
-				if (field.includes('Label') && contact[field] === 'UID') {
-					const valueField = field.replace('Label', 'Value');
-					key = contact[valueField];
-					break;
-				}
-			}
-
-			// Find RIP date
-			let died = null;
-			for (const field in contact) {
-				if (field.includes('Label') && contact[field] === 'RIP') {
-					const valueField = field.replace('Label', 'Value');
-					died = contact[valueField];
-					break;
-				}
-			}
+			let key = findInContact(contact, 'UID');
+			let died = findInContact(contact, 'RIP');
 
 			return {
 				pic: 'https://famcotree.danielthecyberdude.com/Avatar.webp',
@@ -590,14 +584,7 @@
 
 		data.forEach((contact) => {
 			// Find the UID from custom fields
-			let from = null;
-			for (const key in contact) {
-				if (key.includes('Label') && contact[key] === 'UID') {
-					const valueKey = key.replace('Label', 'Value');
-					from = contact[valueKey];
-					break;
-				}
-			}
+			let from = findInContact(contact, 'UID');
 			console.log(from);
 
 			if (!from) return; // Skip if UID does not exist
@@ -1057,7 +1044,7 @@
 						class="peer"
 					/>
 					<div class="collapse-title text-xs font-medium">
-						{openNames ? 'Less' : 'More options'}
+						{openNames ? 'Less' : 'More names'}
 					</div>
 					<div class="collapse-content">
 						{#if openNames}
@@ -1173,13 +1160,15 @@
 						</button>
 					{/if}
 				</div>
+				<div class="collapse-title text-xs font-medium">
+					{openNames ? 'Less' : 'More dates'}
+				</div>
 
 				<div class="relative mt-4">
 					<textarea
 						type="text"
 						id="dNotes"
 						bind:value={cForm.notes}
-						on:input={fixdUID}
 						placeholder="Notes"
 						class="peer input min-h-28 w-full rounded-lg border-2 border-gray-300 px-4 pb-2 pt-1 focus:border-primary focus:outline-none focus:ring-0"
 					/>
