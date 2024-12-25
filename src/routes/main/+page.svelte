@@ -553,41 +553,73 @@
 			]; */
 
 	function importCSV(data) {
-		nodeDataArray = data.map(
-			(contact) => (
-				console.log(contact),
-				{
-					pic: 'https://famcotree.danielthecyberdude.com/Avatar.webp',
-					name: contact['First Name'],
-					surname: contact['Last Name'],
-					born: contact.Birthday,
-					died: contact['Event 1 - Value'], // Assuming death date is in Event 1 - Value
-					notes: contact.Notes,
-					key:
-						contact['Custom Field 1 - Value'] ||
-						`${contact['First Name']}_${contact['Last Name']}_${generateRandomYear()}`, // Use UID or generate one
-					loc: '0 0' // import from file or "0 0"
+		nodeDataArray = data.map((contact) => {
+			// Find UID first
+			let key = null;
+			for (const field in contact) {
+				if (field.includes('Label') && contact[field] === 'UID') {
+					const valueField = field.replace('Label', 'Value');
+					key = contact[valueField];
+					break;
 				}
-			)
-		);
+			}
+
+			// Find RIP date
+			let died = null;
+			for (const field in contact) {
+				if (field.includes('Label') && contact[field] === 'RIP') {
+					const valueField = field.replace('Label', 'Value');
+					died = contact[valueField];
+					break;
+				}
+			}
+
+			return {
+				pic: 'https://famcotree.danielthecyberdude.com/Avatar.webp',
+				name: contact['First Name'],
+				surname: contact['Last Name'],
+				born: contact.Birthday,
+				died: died,
+				notes: contact.Notes,
+				key: key || `${contact['First Name']}_${contact['Last Name']}_${generateRandomYear()}`,
+				loc: '0 0'
+			};
+		});
 
 		linkDataArray = [];
 
 		data.forEach((contact) => {
-			for (let i = 1; i <= 4; i++) {
-				const relationLabel = contact[`Relation ${i} - Label`];
-				const relationValue = contact[`Relation ${i} - Value`];
-
-				if (relationLabel && relationValue) {
-					linkDataArray.push({
-						from:
-							contact['Custom Field 1 - Value'] ||
-							`${contact['First Name']}_${contact['Last Name']}_${generateRandomYear()}`, // Use UID or generated one
-						to: relationValue.trim(),
-						text: relationLabel.trim()
-					});
+			// Find the UID from custom fields
+			let from = null;
+			for (const key in contact) {
+				if (key.includes('Label') && contact[key] === 'UID') {
+					const valueKey = key.replace('Label', 'Value');
+					from = contact[valueKey];
+					break;
 				}
 			}
+			console.log(from);
+
+			if (!from) return; // Skip if UID does not exist
+
+			Object.keys(contact).forEach((key) => {
+				const match = key.match(/^Relation (\d+) - Label$/);
+				if (match) {
+					const index = match[1];
+					const relationLabel = contact[`Relation ${index} - Label`];
+					const relationValues = contact[`Relation ${index} - Value`];
+
+					if (relationLabel && relationValues) {
+						relationValues.split(' ::: ').forEach((relationValue) => {
+							linkDataArray.push({
+								from,
+								to: relationValue.trim(),
+								text: relationLabel.trim()
+							});
+						});
+					}
+				}
+			});
 		});
 
 		console.log('nodeDataArray:', nodeDataArray);
