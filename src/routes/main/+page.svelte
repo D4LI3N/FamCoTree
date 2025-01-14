@@ -21,10 +21,10 @@
 		prefix: '',
 		suffix: '',
 		nickname: '',
-		born: '',
+		Birthday: '',
 		died: '',
 		position: '',
-		notes: '',
+		Notes: '',
 		pic: ''
 	};
 
@@ -91,7 +91,7 @@
 				width: card_w,
 				height: 50,
 				toolTip: go.GraphObject.build('ToolTip').add(
-					new go.TextBlock({ margin: 4 }).bind('text', 'notes')
+					new go.TextBlock({ margin: 4 }).bind('text', 'Notes')
 				),
 				doubleClick: () => {
 					nodeDrawer = true;
@@ -169,12 +169,12 @@
 								margin: 0,
 								textAlign: 'right'
 							},
-							new go.Binding('text', 'born', (date) =>
+							new go.Binding('text', 'Birthday', (date) =>
 								date ? new Date(date).getFullYear() : ''
 							).makeTwoWay((year, data) => {
-								return data.born
-									? (new Date(data.born).setFullYear(year),
-										new Date(data.born).toISOString().split('T')[0])
+								return data.Birthday
+									? (new Date(data.Birthday).setFullYear(year),
+										new Date(data.Birthday).toISOString().split('T')[0])
 									: '';
 							})
 						),
@@ -200,7 +200,7 @@
 								margin: 0,
 								textAlign: 'left'
 							},
-							//new go.Binding('text', 'born').makeTwoWay()
+							//new go.Binding('text', 'Birthday').makeTwoWay()
 							new go.Binding('text', 'died', (date) =>
 								date ? new Date(date).getFullYear() : ''
 							).makeTwoWay((year, data) => {
@@ -261,8 +261,15 @@
 		});
 
 		diagram.addDiagramListener('ChangedSelection', (e) => {
-			selectedNode = diagram.selection.first();
-			selectedNodes = diagram.selection.count;
+			// if selected node is node
+			if (diagram.selection.first() instanceof go.Node) {
+				selectedNode = diagram.selection.first();
+				selectedNodes = diagram.selection.count;
+				console.log(selectedNode);
+			} else {
+				selectedNode = null;
+				selectedNodes = 0;
+			}
 		});
 
 		fileStore.subscribe((value) => {
@@ -327,9 +334,9 @@
 		selectedNode.data.name = cForm.name;
 		selectedNode.data.surname = cForm.surname;
 
-		selectedNode.data.born = cForm.born;
+		selectedNode.data.Birthday = cForm.Birthday;
 		selectedNode.data.died = cForm.died;
-		selectedNode.data.notes = cForm.notes;
+		selectedNode.data.Notes = cForm.Notes;
 
 		updateAllUids();
 		selectedNode.data.key = cForm.key;
@@ -391,9 +398,9 @@
 			pic: 'https://famcotree.danielthecyberdude.com/Avatar.webp',
 			name: 'New',
 			surname: 'Contact',
-			born: '',
+			Birthday: '',
 			died: '',
-			notes: '',
+			Notes: '',
 			key: 'new_contact_' + generateRandomYear(),
 			loc: nextFreeLocH()
 		});
@@ -407,9 +414,9 @@
 		cForm.pic = data.pic;
 		cForm.name = data.name;
 		cForm.surname = data.surname;
-		cForm.born = data.born;
+		cForm.Birthday = data.Birthday;
 		cForm.died = data.died;
-		cForm.notes = data.notes;
+		cForm.Notes = data.Notes;
 
 		cForm.key = data.key;
 		cForm.position = data.loc
@@ -520,7 +527,7 @@
 	/* nodeDataArray = [
 				{
 					key: 'Dmitar_Petrović_1232',
-					born: 1992,
+					Birthday: 1992,
 					died: 2000,
 					name: 'Dmitar Petrović',
 					from: true,
@@ -529,7 +536,7 @@
 				},
 				{
 					key: 'Danica_Petrović_1111',
-					born: 1992,
+					Birthday: 1992,
 					died: 2000,
 					name: 'Danica Petrović',
 					from: true,
@@ -538,7 +545,7 @@
 				},
 				{
 					key: 'Milan_Petrović_1111',
-					born: 1992,
+					Birthday: 1992,
 					died: 2000,
 					name: 'Milan Petrović Đedoslav',
 					from: true,
@@ -552,12 +559,11 @@
 				{ from: 'Dmitar_Petrović_1232', to: 'Milan_Petrović_1111', text: 'Child' }
 			]; */
 
-	function findInContact(contact, key) {
+	function findInContact(contact, key, getKey = false) {
 		for (const field in contact) {
 			if (field.includes('Label') && contact[field] === key) {
 				const valueField = field.replace('Label', 'Value');
-				key = contact[valueField];
-				break;
+				return getKey ? valueField : contact[valueField];
 			}
 		}
 		return null;
@@ -566,18 +572,39 @@
 	function importCSV(data) {
 		nodeDataArray = data.map((contact) => {
 			let key = findInContact(contact, 'UID');
-			let died = findInContact(contact, 'RIP');
 
-			return {
+			let newContact = Object.assign({}, contact, {
 				pic: 'https://famcotree.danielthecyberdude.com/Avatar.webp',
 				name: contact['First Name'],
 				surname: contact['Last Name'],
-				born: contact.Birthday,
-				died: died,
-				notes: contact.Notes,
+				died: findInContact(contact, 'RIP'),
 				key: key || `${contact['First Name']}_${contact['Last Name']}_${generateRandomYear()}`,
 				loc: '0 0'
-			};
+			});
+
+			delete newContact['First Name'];
+			delete newContact['Last Name'];
+			const uidKey = findInContact(contact, 'UID', true);
+			if (uidKey) {
+				delete newContact[uidKey];
+				delete newContact[uidKey.replace('Value', 'Label')];
+			}
+			// delete Relation x - Label and Relation x - Value,  where x is index
+
+			Object.keys(newContact).forEach((key) => {
+				const match = key.match(/^Relation (\d+) - Label$/);
+				if (match) {
+					const index = match[1];
+					delete newContact[`Relation ${index} - Label`];
+					delete newContact[`Relation ${index} - Value`];
+				}
+			});
+
+			newContact.Birthday = /^\d{4}-\d{2}-\d{2}$/.test(newContact.Birthday)
+				? newContact.Birthday
+				: null;
+
+			return newContact;
 		});
 
 		linkDataArray = [];
@@ -677,6 +704,178 @@
 	}
 
 	function downloadCSV() {
+		let nodeDataArray = diagram.model.nodeDataArray;
+		let linkDataArray = diagram.model.linkDataArray;
+
+		let csvTxt = 'First Name,Middle Name,Last Name,';
+
+		let maxEmails = 0;
+		let maxPhones = 0;
+		let maxAddresses = 0;
+		let maxRelations = 0;
+		let maxCustomFields = 0;
+
+		nodeDataArray.forEach((node) => {
+			console.log(node);
+
+			// Extract Emails for the current node, "E-mail 1 - Label,E-mail 1 - Value"
+			const emails = Object.keys(node)
+				.filter((key) => key.startsWith('E-mail') && key.endsWith('Value'))
+				.map((key) => [node[key.replace('Value', 'Label')], node[key]]);
+			if (emails.length > maxEmails) {
+				maxEmails = emails.length;
+			}
+			console.log(emails);
+
+			// Extract Phones for the current node, "Phone 1 - Label,Phone 1 - Value"
+			const phones = Object.keys(node)
+				.filter((key) => key.startsWith('Phone') && key.endsWith('Value'))
+				.map((key) => [node[key.replace('Value', 'Label')], node[key]]);
+			if (phones.length > maxPhones) {
+				maxPhones = phones.length;
+			}
+			console.log(phones);
+
+			// Extract Addresses for the current node, "Address 1 - Label,Address 1 - Formatted,Address 1 - Street,Address 1 - City,Address 1 - PO Box,Address 1 - Region,Address 1 - Postal Code,Address 1 - Country,Address 1 - Extended Address"
+			const addresses = Object.keys(node)
+				.filter((key) => key.startsWith('Address') && key.endsWith('Label'))
+				.map((key) => {
+					const baseKey = key.replace('Label', '');
+					return [
+						node[`${baseKey}Label`],
+						node[`${baseKey}Formatted`],
+						node[`${baseKey}Street`],
+						node[`${baseKey}City`],
+						node[`${baseKey}PO Box`],
+						node[`${baseKey}Region`],
+						node[`${baseKey}Postal Code`],
+						node[`${baseKey}Country`],
+						node[`${baseKey}Extended Address`]
+					];
+				});
+			if (addresses.length > maxAddresses) {
+				maxAddresses = addresses.length;
+			}
+			console.log(addresses);
+
+			// Extract relations for the current node (only those where the node is "from")
+			const relations = linkDataArray.filter((link) => link.from === node.key);
+			console.log(relations);
+
+			if (relations.length > maxRelations) {
+				maxRelations = relations.length;
+			}
+
+			// Extract custom fields for the current node, "Custom Field 1 - Label,Custom Field 1 - Value"
+			let customFields = [];
+			customFields.push(['UID', node.key]);
+			customFields.push(['LOC', node.loc]);
+			customFields = customFields.concat(
+				Object.keys(node)
+					.filter((key) => key.startsWith('Custom Field') && key.endsWith('Value'))
+					.map((key) => [node[key.replace('Value', 'Label')], node[key]])
+			);
+			if (customFields.length > maxCustomFields) {
+				maxCustomFields = customFields.length;
+			}
+
+			console.log(customFields, maxCustomFields);
+		});
+
+		// mora najprije prebrojiti, pa onda ispuniti sta ima, pa onda popuniti sa praznim
+		console.log(maxEmails, maxPhones, maxAddresses, maxRelations, maxCustomFields);
+
+		// headers
+		csvTxt += Object.keys(nodeDataArray[0]).slice(1, 15).join(',') + ','; // till Labels
+		for (let i = 1; i <= maxEmails; i++) {
+			csvTxt += `E-mail ${i} - Label,E-mail ${i} - Value,`;
+		}
+		for (let i = 1; i <= maxPhones; i++) {
+			csvTxt += `Phone ${i} - Label,Phone ${i} - Value,`;
+		}
+		for (let i = 1; i <= maxAddresses; i++) {
+			csvTxt += `Address ${i} - Label,Address ${i} - Formatted,Address ${i} - Street,Address ${i} - City,Address ${i} - PO Box,Address ${i} - Region,Address ${i} - Postal Code,Address ${i} - Country,Address ${i} - Extended Address,`;
+		}
+		for (let i = 1; i <= maxRelations; i++) {
+			csvTxt += `Relation ${i} - Label,Relation ${i} - Value,`;
+		}
+		for (let i = 1; i <= maxCustomFields; i++) {
+			csvTxt += `Custom Field ${i} - Label,Custom Field ${i} - Value,`;
+		}
+		csvTxt = csvTxt.slice(0, -1) + '\n';
+
+		// data
+		nodeDataArray.forEach((node) => {
+			csvTxt += node.name + ',' + node['Middle Name'] + ',' + node.surname + ',';
+			// 15th column notes needs to be in quotes
+			let values = Object.values(node).slice(1, 15);
+			values[11] = `"${values[11]}"`;
+			values[13] = `"${values[13]}"`;
+			csvTxt += values.join(',') + ',';
+
+			//csvTxt += Object.values(node).slice(1, 15).join(',') + ',';
+
+			// E-mails with gaps
+			for (let i = 1; i <= maxEmails; i++) {
+				node[`E-mail ${i} - Label`]
+					? (csvTxt += `${node[`E-mail ${i} - Label`]},${node[`E-mail ${i} - Value`]},`)
+					: (csvTxt += ',,');
+			}
+
+			// Phones with gaps
+			for (let i = 1; i <= maxPhones; i++) {
+				node[`Phone ${i} - Label`]
+					? (csvTxt += `${node[`Phone ${i} - Label`]},${node[`Phone ${i} - Value`]},`)
+					: (csvTxt += ',,');
+			}
+
+			// Addresses with gaps
+			for (let i = 1; i <= maxAddresses; i++) {
+				node[`Address ${i} - Label`]
+					? (csvTxt += `${node[`Address ${i} - Label`]},"${node[`Address ${i} - Formatted`]}",${node[`Address ${i} - Street`]},${node[`Address ${i} - City`]},${node[`Address ${i} - PO Box`]},${node[`Address ${i} - Region`]},${node[`Address ${i} - Postal Code`]},${node[`Address ${i} - Country`]},${node[`Address ${i} - Extended Address`]},`)
+					: (csvTxt += ',,,,,,,,,,');
+			}
+
+			// Relations with gaps
+			linkDataArray
+				.filter((link) => link.from === node.key)
+				.forEach((link, index) => {
+					csvTxt += `${link.text},${link.to},`;
+				});
+
+			console.log(maxCustomFields);
+			// Custom fields with gaps
+			csvTxt += `UID,${node.key},LOC,${node.loc},`;
+			for (let i = 1; i <= maxCustomFields; i++) {
+				console.log(node[`Custom Field ${i} - Label`], node[`Custom Field ${i} - Value`]);
+				if (!node[`Custom Field ${i} - Label`]) {
+					continue;
+				}
+				csvTxt += `${node[`Custom Field ${i} - Label`]},${node[`Custom Field ${i} - Value`]},`;
+			}
+			//csvTxt += '\n\n';
+			csvTxt = csvTxt.slice(0, -1) + '\n\n';
+		});
+
+		/*
+		nodeDataArray.forEach((node) => {
+			const row = Object.values(node).slice(1).join(',');
+			csvTxt += row + '\n';
+		});
+		*/
+
+		// download CSV
+		const blob = new Blob([csvTxt], { type: 'text/csv;charset=utf-8;' });
+		const link = document.createElement('a');
+		const url = URL.createObjectURL(blob);
+		link.setAttribute('href', url);
+		link.setAttribute('download', 'exported_contacts.csv');
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
+	}
+
+	function downloadCSVold() {
 		const nodeDataArray = diagram.model.nodeDataArray;
 		const linkDataArray = diagram.model.linkDataArray;
 		console.log('download');
@@ -725,7 +924,7 @@
 
 		// Process node data and dynamically add headers for relations
 		nodeDataArray.forEach((node) => {
-			const { name, surname, key, loc, notes, pic, born, died } = node;
+			const { name, surname, key, loc, Notes, pic, Birthday, died } = node;
 
 			// Extract relations for the current node (only those where the node is "from")
 			const relations = relationsMap[key] || [];
@@ -753,8 +952,8 @@
 				'', // Organization Name
 				'', // Organization Title
 				'', // Organization Department
-				born || '', // Birthday
-				notes || '', // Notes
+				Birthday || '', // Birthday
+				Notes || '', // Notes
 				pic || '', // Photo
 				'' // Labels
 			];
@@ -857,7 +1056,7 @@
 				'_' +
 				cForm.surname +
 				'_' +
-				(cForm.born !== '' ? new Date(cForm.born).getFullYear() : generateRandomYear());
+				(cForm.Birthday !== '' ? new Date(cForm.Birthday).getFullYear() : generateRandomYear());
 		}
 	}
 
@@ -1108,7 +1307,7 @@
 					<input
 						type="date"
 						id="dBorn"
-						bind:value={cForm.born}
+						bind:value={cForm.Birthday}
 						on:input={fixdUID}
 						placeholder=""
 						class="peer input h-12 w-full rounded-lg border-2 border-gray-300 px-4 pb-2 pt-2 focus:border-primary focus:outline-none focus:ring-0"
@@ -1121,12 +1320,12 @@
 					>
 						Birth date
 					</label>
-					{#if cForm.born}
+					{#if cForm.Birthday}
 						<button
 							type="button"
 							class="absolute right-12 top-4 text-gray-400 hover:text-red-500"
 							on:click={() => {
-								cForm.born = '';
+								cForm.Birthday = '';
 								fixdUID();
 							}}
 						>
@@ -1164,11 +1363,17 @@
 					{openNames ? 'Less' : 'More dates'}
 				</div>
 
+				<div class="divider">Emails</div>
+				<div class="divider">Phones</div>
+				<div class="divider">Addresses</div>
+				<div class="divider">Relations</div>
+				<div class="divider">Custom Fields</div>
+
 				<div class="relative mt-4">
 					<textarea
 						type="text"
 						id="dNotes"
-						bind:value={cForm.notes}
+						bind:value={cForm.Notes}
 						placeholder="Notes"
 						class="peer input min-h-28 w-full rounded-lg border-2 border-gray-300 px-4 pb-2 pt-1 focus:border-primary focus:outline-none focus:ring-0"
 					/>
