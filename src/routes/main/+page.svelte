@@ -814,45 +814,85 @@
 			csvTxt += values.join(',') + ',';
 
 			//csvTxt += Object.values(node).slice(1, 15).join(',') + ',';
-
+			let after = 0;
 			// E-mails with gaps
-			for (let i = 1; i <= maxEmails; i++) {
+			/* for (let i = 1; i <= maxEmails; i++) {
 				node[`E-mail ${i} - Label`]
 					? (csvTxt += `${node[`E-mail ${i} - Label`]},${node[`E-mail ${i} - Value`]},`)
 					: (csvTxt += ',,');
+			} */
+			after = 0;
+			for (let i = 1; i <= maxEmails; i++) {
+				if (!node[`E-mail ${i} - Label`]) {
+					after++;
+					continue;
+				}
+				csvTxt += `${node[`E-mail ${i} - Label`]},${node[`E-mail ${i} - Value`]},`;
 			}
+			csvTxt += ',,'.repeat(after);
 
 			// Phones with gaps
-			for (let i = 1; i <= maxPhones; i++) {
+			/* for (let i = 1; i <= maxPhones; i++) {
 				node[`Phone ${i} - Label`]
 					? (csvTxt += `${node[`Phone ${i} - Label`]},${node[`Phone ${i} - Value`]},`)
 					: (csvTxt += ',,');
+			} */
+			after = 0;
+			for (let i = 1; i <= maxPhones; i++) {
+				if (!node[`Phone ${i} - Label`]) {
+					after++;
+					continue;
+				}
+				csvTxt += `${node[`Phone ${i} - Label`]},${node[`Phone ${i} - Value`]},`;
 			}
+			csvTxt += ',,'.repeat(after);
 
 			// Addresses with gaps
-			for (let i = 1; i <= maxAddresses; i++) {
+			/* for (let i = 1; i <= maxAddresses; i++) {
 				node[`Address ${i} - Label`]
 					? (csvTxt += `${node[`Address ${i} - Label`]},"${node[`Address ${i} - Formatted`]}",${node[`Address ${i} - Street`]},${node[`Address ${i} - City`]},${node[`Address ${i} - PO Box`]},${node[`Address ${i} - Region`]},${node[`Address ${i} - Postal Code`]},${node[`Address ${i} - Country`]},${node[`Address ${i} - Extended Address`]},`)
 					: (csvTxt += ',,,,,,,,,,');
+			} */
+			csvTxt += 'adr';
+			after = 0;
+			for (let i = 1; i <= maxAddresses; i++) {
+				if (!node[`Address ${i} - Label`]) {
+					after++;
+					continue;
+				}
+				csvTxt += `${node[`Address ${i} - Label`]},"${node[`Address ${i} - Formatted`]}",${node[`Address ${i} - Street`]},${node[`Address ${i} - City`]},${node[`Address ${i} - PO Box`]},${node[`Address ${i} - Region`]},${node[`Address ${i} - Postal Code`]},${node[`Address ${i} - Country`]},${node[`Address ${i} - Extended Address`]},`;
 			}
+			csvTxt += ',,,,,,,,,'.repeat(after);
 
 			// Relations with gaps
-			linkDataArray
+			/* 			linkDataArray
 				.filter((link) => link.from === node.key)
 				.forEach((link, index) => {
 					csvTxt += `${link.text},${link.to},`;
+				}); */
+			csvTxt += 'rel';
+			after = 0;
+			linkDataArray
+				.filter((link) => link.from === node.key)
+				.forEach((link) => {
+					after++;
+					csvTxt += `${link.text},${link.to},`;
 				});
+			csvTxt += ',,'.repeat(maxRelations - after);
 
+			after = 0;
 			console.log(maxCustomFields);
 			// Custom fields with gaps
 			csvTxt += `UID,${node.key},LOC,${node.loc},`;
 			for (let i = 1; i <= maxCustomFields; i++) {
 				console.log(node[`Custom Field ${i} - Label`], node[`Custom Field ${i} - Value`]);
 				if (!node[`Custom Field ${i} - Label`]) {
+					after++;
 					continue;
 				}
 				csvTxt += `${node[`Custom Field ${i} - Label`]},${node[`Custom Field ${i} - Value`]},`;
 			}
+			csvTxt += ',,'.repeat(after - 2);
 			//csvTxt += '\n\n';
 			csvTxt = csvTxt.slice(0, -1) + '\n\n';
 		});
