@@ -1090,18 +1090,24 @@
 
 <div class="navbar absolute z-50 bg-base-100 pb-3">
 	<div class="navbar-start">
-		<label
-			for="node-drawer"
-			class="btn btn-circle btn-ghost {selectedNodes !== 1 ? 'btn-disabled' : ''}"
-			><Icon icon="mdi:edit" /></label
-		>
-		<button on:click={addContact} class="btn btn-circle btn-ghost">
-			<Icon icon="mdi:plus" />
-		</button>
+		<div class="tooltip tooltip-bottom" data-tip="Edit contact">
+			<label
+				for="node-drawer"
+				class="btn btn-circle btn-ghost {selectedNodes !== 1 ? 'btn-disabled' : ''}"
+				><Icon icon="mdi:edit" /></label
+			>
+		</div>
+		<div class="tooltip tooltip-bottom" data-tip="Add contact">
+			<button on:click={addContact} class="btn btn-circle btn-ghost">
+				<Icon icon="mdi:plus" />
+			</button>
+		</div>
 
-		<button on:click={removeContact} disabled={!selectedNodes} class="btn btn-circle btn-ghost">
-			<Icon icon="mdi:minus" />
-		</button>
+		<div class="tooltip tooltip-bottom" data-tip="Remove contact">
+			<button on:click={removeContact} disabled={!selectedNodes} class="btn btn-circle btn-ghost">
+				<Icon icon="mdi:minus" />
+			</button>
+		</div>
 	</div>
 	<a href="/" class="btn btn-ghost navbar-center">
 		<svg
@@ -1123,29 +1129,37 @@
 		<div class="dropdown">
 			<!-- <div tabindex="-1" role="button" class="btn btn-circle btn-ghost">Export</div> -->
 
-			<button class="btn btn-circle btn-ghost">
-				<div class="indicator">
-					<Icon icon="mdi:download" />
-				</div>
-			</button>
+			<div class="tooltip tooltip-bottom" data-tip="Download">
+				<button class="btn btn-circle btn-ghost">
+					<div class="indicator">
+						<Icon icon="mdi:download" />
+					</div>
+				</button>
+			</div>
 			<ul class="menu dropdown-content menu-sm z-[1] mt-3 rounded-box bg-base-100 p-2 shadow">
 				<li><button on:click={downloadSVG}>SVG</button></li>
 				<li><button on:click={downloadPNG}>PNG</button></li>
 				<hr />
 				<li>
-					<button on:click={downloadCSV}>CSV</button>
+					<div class="tooltip" data-tip="Google Contacts compatible CSV">
+						<button on:click={downloadCSV}>CSV</button>
+					</div>
 				</li>
 				<li class="disabled">
-					<button class="btn-disabled">VCF</button>
+					<div class="tooltip" data-tip="Working on it...">
+						<button class="btn-disabled">VCF</button>
+					</div>
 				</li>
 			</ul>
 		</div>
 		<div class="dropdown flex justify-center">
-			<button class="btn btn-circle btn-ghost">
-				<button class="indicator" on:click={shareQR}>
-					<Icon icon="material-symbols:share" />
+			<div class="tooltip tooltip-bottom" data-tip="Share SVG">
+				<button class="btn btn-circle btn-ghost">
+					<button class="indicator" on:click={shareQR}>
+						<Icon icon="material-symbols:share" />
+					</button>
 				</button>
-			</button>
+			</div>
 			<div
 				class="  menu dropdown-content menu-sm z-[1] mr-40 mt-16 w-max rounded-box bg-base-100 p-2 shadow"
 			>
@@ -1171,9 +1185,11 @@
 		</div>
 
 		<div class="drawer-content">
-			<label for="settings-drawer" class="btn btn-circle btn-ghost"
-				><Icon icon="mdi:settings" /></label
-			>
+			<div class="tooltip tooltip-bottom" data-tip="Settings">
+				<label for="settings-drawer" class="btn btn-circle btn-ghost"
+					><Icon icon="mdi:settings" />
+				</label>
+			</div>
 		</div>
 	</div>
 </div>
@@ -1578,7 +1594,7 @@
 						/>
 					</label>
 
-					<div class="divider">Danger zone</div>
+					<div class=" divider font-bold text-red-500">Danger zone</div>
 					<button on:click={editScheme} class="btn btn-error mt-4 bg-red-300">Edit scheme</button>
 					<button on:click={removeAllRelations} class="btn btn-error mt-4"
 						>Delete all {linkCount} relations</button
