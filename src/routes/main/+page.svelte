@@ -814,13 +814,8 @@
 			csvTxt += values.join(',') + ',';
 
 			//csvTxt += Object.values(node).slice(1, 15).join(',') + ',';
-			let after = 0;
-			// E-mails with gaps
-			/* for (let i = 1; i <= maxEmails; i++) {
-				node[`E-mail ${i} - Label`]
-					? (csvTxt += `${node[`E-mail ${i} - Label`]},${node[`E-mail ${i} - Value`]},`)
-					: (csvTxt += ',,');
-			} */
+			let after;
+			// E-mails
 			after = 0;
 			for (let i = 1; i <= maxEmails; i++) {
 				if (!node[`E-mail ${i} - Label`]) {
@@ -831,12 +826,7 @@
 			}
 			csvTxt += ',,'.repeat(after);
 
-			// Phones with gaps
-			/* for (let i = 1; i <= maxPhones; i++) {
-				node[`Phone ${i} - Label`]
-					? (csvTxt += `${node[`Phone ${i} - Label`]},${node[`Phone ${i} - Value`]},`)
-					: (csvTxt += ',,');
-			} */
+			// Phones
 			after = 0;
 			for (let i = 1; i <= maxPhones; i++) {
 				if (!node[`Phone ${i} - Label`]) {
@@ -847,13 +837,7 @@
 			}
 			csvTxt += ',,'.repeat(after);
 
-			// Addresses with gaps
-			/* for (let i = 1; i <= maxAddresses; i++) {
-				node[`Address ${i} - Label`]
-					? (csvTxt += `${node[`Address ${i} - Label`]},"${node[`Address ${i} - Formatted`]}",${node[`Address ${i} - Street`]},${node[`Address ${i} - City`]},${node[`Address ${i} - PO Box`]},${node[`Address ${i} - Region`]},${node[`Address ${i} - Postal Code`]},${node[`Address ${i} - Country`]},${node[`Address ${i} - Extended Address`]},`)
-					: (csvTxt += ',,,,,,,,,,');
-			} */
-			csvTxt += 'adr';
+			// Addresses
 			after = 0;
 			for (let i = 1; i <= maxAddresses; i++) {
 				if (!node[`Address ${i} - Label`]) {
@@ -864,13 +848,7 @@
 			}
 			csvTxt += ',,,,,,,,,'.repeat(after);
 
-			// Relations with gaps
-			/* 			linkDataArray
-				.filter((link) => link.from === node.key)
-				.forEach((link, index) => {
-					csvTxt += `${link.text},${link.to},`;
-				}); */
-			csvTxt += 'rel';
+			// Relations
 			after = 0;
 			linkDataArray
 				.filter((link) => link.from === node.key)
@@ -880,6 +858,7 @@
 				});
 			csvTxt += ',,'.repeat(maxRelations - after);
 
+			// Custom fields
 			after = 0;
 			console.log(maxCustomFields);
 			// Custom fields with gaps
@@ -893,6 +872,7 @@
 				csvTxt += `${node[`Custom Field ${i} - Label`]},${node[`Custom Field ${i} - Value`]},`;
 			}
 			csvTxt += ',,'.repeat(after - 2);
+
 			//csvTxt += '\n\n';
 			csvTxt = csvTxt.slice(0, -1) + '\n\n';
 		});
