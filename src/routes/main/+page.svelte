@@ -889,7 +889,8 @@
 		const link = document.createElement('a');
 		const url = URL.createObjectURL(blob);
 		link.setAttribute('href', url);
-		link.setAttribute('download', 'exported_contacts.csv');
+		//link.setAttribute('download',  //"FamCoTree_<year>.csv");
+		link.setAttribute('download', `FamCoTree_${new Date().getFullYear()}.csv`);
 		document.body.appendChild(link);
 		link.click();
 		document.body.removeChild(link);
