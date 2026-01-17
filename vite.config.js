@@ -32,13 +32,13 @@ export default defineConfig({
         ],
         screenshots: [
           {
-            src: '/static/wide.png',
+            src: 'wide.png',
             sizes: '1280x720',
             type: 'image/png',
             form_factor: 'wide'
           },
           {
-            src: '/static/narrow.png',
+            src: 'narrow.png',
             sizes: '375x667',
             type: 'image/png',
             form_factor: 'narrow'
