@@ -15,6 +15,9 @@ export default defineConfig({
   plugins: [
     sveltekit(),
     VitePWA({
+      devOptions: {
+        enabled: true
+      },
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'robots.txt', 'x.png', 'x2.png'], // your static files
       manifest: {
