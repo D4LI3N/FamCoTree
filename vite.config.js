@@ -19,8 +19,8 @@ export default defineConfig({
       includeAssets: ['favicon.svg', 'robots.txt', 'x.png', 'x2.png'], // your static files
       manifest: {
         name: 'FamCoTree',
-        short_name: 'FamCoTree',
-        description: 'Family tree editor with offline support',
+        short_name: 'FCT',
+        description: 'Family tree editor (offline)',
         theme_color: '#ffffff',
         background_color: '#ffffff',
         display: 'standalone',
@@ -46,7 +46,7 @@ export default defineConfig({
         ]
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,png,svg}'], // cache everything in your build
+        globPatterns: ['**/*.{js,css,html,png,svg,ico,json,webmanifest,woff2,woff,ttf}'], // cache everything in your build
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/.*$/, // optional: cache external APIs
