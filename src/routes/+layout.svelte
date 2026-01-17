@@ -1,6 +1,13 @@
 <script>
 	import '../app.css';
+	import { pwaInfo } from 'virtual:pwa-info';
+
+	$: webManifestLink = pwaInfo ? pwaInfo.webManifest.linkTag : '';
 </script>
+
+<svelte:head>
+	{@html webManifestLink}
+</svelte:head>
 
 <slot></slot>
 <footer class="footer footer-center bg-base-100 py-1 text-base-content">

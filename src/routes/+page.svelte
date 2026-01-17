@@ -194,7 +194,7 @@
 		<p>✔️ Edit contacts and relations in FamCoTree or Contacts App (<a href="#">learn how</a>)</p>
 		<p>✔️ Store all your Family Tree information and relations in one file</p>
 		<p>✔️ Import CSV or VCF (V3.0) / Export CSV, VCF | SVG, PNG</p>
-		<p>✔️ Fully offline installable PWA</p>
+		<p>✔️ Installable PWA</p>
 	</article>
 </div>
 
