@@ -604,6 +604,12 @@
 				? newContact.Birthday
 				: null;
 
+			// import loc
+			const loc = findInContact(contact, 'LOC');
+			if (loc) {
+				newContact.loc = loc;
+			}
+
 			return newContact;
 		});
 
