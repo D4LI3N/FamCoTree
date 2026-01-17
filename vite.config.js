@@ -25,10 +25,24 @@ export default defineConfig({
         background_color: '#ffffff',
         display: 'standalone',
         start_url: "./",
-		scope: ".",
+		    scope: ".",
         icons: [
           { src: '/x.png', sizes: '192x192', type: 'image/png' },
           { src: '/x2.png', sizes: '512x512', type: 'image/png' }
+        ],
+        screenshots: [
+          {
+            src: '/static/wide.png',
+            sizes: '1280x720',
+            type: 'image/png',
+            form_factor: 'wide'
+          },
+          {
+            src: '/static/narrow.png',
+            sizes: '375x667',
+            type: 'image/png',
+            form_factor: 'narrow'
+          }
         ]
       },
       workbox: {
